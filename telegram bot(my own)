@@ -1,0 +1,19 @@
+import telebot;
+from autocorrect import Speller;
+bot = telebot.TeleBot('7272011235:AAH-aHYpjoLcX5eBB4vg8tsYIHl3F9ntL3Q');
+@bot.message_handler(content_types=['text'])
+def get_text_messages(message):
+    text = message.text
+    text_st = ""
+    spell = Speller(lang='ru', fast=True)
+    listch = [',', '<', '>', '.', '{', '}', '[', ']', '!', '~', '#', '"', "'", '$', '%', '^', ':', ';', '&', '*', '(', ')', '`']
+    text = text.lower()
+    text = spell(text)
+    for i in text:
+        if i in listch:
+            text_st += " "
+        else:
+            text_st += i
+    bot.send_message(message.from_user.id, text_st)
+bot.polling(none_stop=True, interval=0)
+
